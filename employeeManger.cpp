@@ -94,6 +94,30 @@ void initializeCSV(const string& fileName) {
     outFile.close();
 }
 
+bool getValidatedInt(const string& prompt, int& value) {
+    string input;
+    while (true) {
+        cout << prompt;
+        getline(cin, input);
+        stringstream ss(input);
+        if (ss >> value && ss.eof()) break;
+        cout << "Invalid input. Please enter a valid integer.\n";
+    }
+    return true;
+}
+
+bool getValidatedDouble(const string& prompt, double& value) {
+    string input;
+    while (true) {
+        cout << prompt;
+        getline(cin, input);
+        stringstream ss(input);
+        if (ss >> value && ss.eof()) break;
+        cout << "Invalid input. Please enter a valid number.\n";
+    }
+    return true;
+}
+
 int main() {
     const string fileName = "employees.csv";
     initializeCSV(fileName);
@@ -107,24 +131,21 @@ int main() {
 
         int choice;
         cin >> choice;
+        cin.ignore();
 
         if (choice == 1) {
-            cin.ignore();
             string name, department, position;
             int idNumber;
             double salary;
 
             cout << "Enter Employee Name: ";
             getline(cin, name);
-            cout << "Enter Employee ID: ";
-            cin >> idNumber;
-            cin.ignore();
+            getValidatedInt("Enter Employee ID: ", idNumber);
             cout << "Enter Employee Department: ";
             getline(cin, department);
             cout << "Enter Employee Position: ";
             getline(cin, position);
-            cout << "Enter Employee Salary: ";
-            cin >> salary;
+            getValidatedDouble("Enter Employee Salary: ", salary);
 
             Employee emp(name, idNumber, department, position, salary);
             emp.saveToCSV(fileName);
